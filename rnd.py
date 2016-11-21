@@ -3,11 +3,16 @@
 from random import SystemRandom
 
 
-def rnd():
+def rnd(characters=r'''ABCDEFGHJKMNPQRSTVWXYabcdefghjkmnpqrstvwxy0123456789!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~''' ,length=16):
     r = SystemRandom()
-    results = [r.choice(r'''ABCDEFGHJKMNPQRSTVWXYabcdefghjkmnpqrstvwxy0123456789!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~''') for x in range(16)]
+    results = [r.choice(characters) for x in range(16)]
     return ''.join(results)
 
 
 if __name__ == '__main__':
-    print(rnd())
+    import sys
+    if len(sys.argv) > 1:
+        result = rnd(characters=sys.argv[1])
+    else:
+        result = rnd()
+    print(result)
