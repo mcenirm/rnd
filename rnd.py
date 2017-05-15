@@ -71,5 +71,20 @@ DEFAULT_RULE.addCategory(category=PUNCT)
 
 
 if __name__ == '__main__':
-    result = DEFAULT_RULE.rnd()
+    import sys
+    if len(sys.argv) > 1:
+        if sys.argv[1] == '--safari':
+            word_count = 4
+            word_length = 3
+            safari_rule = CategoryBasedRule(length=word_length*word_count, category_quorum=2)
+            safari_rule.addCategory(category=DIGITS)
+            safari_rule.addCategory(category=SAFE_UPPER)
+            safari_rule.addCategory(category=SAFE_LOWER)
+            result = safari_rule.rnd()
+            result = '-'.join([result[i*word_length:(i+1)*word_length] for i in range(word_count)])
+        else:
+            print('Usage: {} [--safari]'.format(sys.argv[0]), file=sys.stderr)
+            sys.exit(1)
+    else:
+        result = DEFAULT_RULE.rnd()
     print(result)
