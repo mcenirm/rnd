@@ -99,12 +99,24 @@ SAFARI_RULE.addCategory(category=SAFE_UPPER)
 SAFARI_RULE.addCategory(category=SAFE_LOWER)
 
 
+def legible(separator, word_count, word_length, rule_class, category_quorum, categories):
+    rule = rule_class(length=word_length*word_count, category_quorum=category_quorum)
+    for category in categories:
+        rule.addCategory(category=category)
+    result = rule.rnd()
+    result = separator.join([result[i*word_length:(i+1)*word_length] for i in range(word_count)])
+    return result
+
+
 if __name__ == '__main__':
     import sys
     if len(sys.argv) > 1:
         if sys.argv[1] == '--safari':
-            result = SAFARI_RULE.rnd()
-            result = '-'.join([result[i*SAFARI_WORD_LENGTH:(i+1)*SAFARI_WORD_LENGTH] for i in range(SAFARI_WORD_COUNT)])
+            result = legible('-', SAFARI_WORD_COUNT, SAFARI_WORD_LENGTH, CategoryBasedRule, 2, [
+                DIGITS,
+                SAFE_UPPER,
+                SAFE_LOWER,
+            ])
         else:
             print('Usage: {} [--safari]'.format(sys.argv[0]), file=sys.stderr)
             sys.exit(1)
