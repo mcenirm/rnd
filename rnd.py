@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from random import SystemRandom
+import string
 
 
 class MorselCategory():
@@ -8,13 +9,34 @@ class MorselCategory():
         self.count = len(characters)
         if self.count < 1:
             raise ValueError('Characters should not be empty')
-        self.characters = characters
+        self.characters = ''.join(sorted(set(characters)))
 
 
-DIGITS = MorselCategory(characters='0123456789')
-SAFE_UPPER = MorselCategory(characters='ABCDEFGHJKMNPQRSTVWXY')
-SAFE_LOWER = MorselCategory(characters='abcdefghjkmnpqrstvwxy')
-PUNCT = MorselCategory(characters='''!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~''')
+# cf https://ux.stackexchange.com/a/53345
+ambiguous_letters = {
+    # 'B', # 8
+    # 'D', # Q
+    # 'G', # 6
+    'I', # 1
+    'l', # 1
+    'O', # 0
+    # 'Q', # D
+    # 'S', # 5
+    'Z', # 2
+}
+
+unsafe_letters = {
+    'L',
+    'U', # cf https://en.wikipedia.org/wiki/Base32#Crockford.27s_Base32
+}
+
+ambiguous_or_unsafe_letters = ambiguous_letters | unsafe_letters
+
+
+DIGITS = MorselCategory(characters=string.digits)
+SAFE_UPPER = MorselCategory(characters=set(string.ascii_uppercase)-ambiguous_or_unsafe_letters)
+SAFE_LOWER = MorselCategory(characters=set(string.ascii_lowercase)-ambiguous_or_unsafe_letters)
+PUNCT = MorselCategory(characters=string.punctuation)
 
 
 class CategoryBasedRule():
