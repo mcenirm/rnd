@@ -117,8 +117,14 @@ if __name__ == '__main__':
                 SAFE_UPPER,
                 SAFE_LOWER,
             ])
+        elif sys.argv[1] == '-x':
+            result = legible('_', 5, 4, CategoryBasedRule, 3, [
+                DIGITS,
+                SAFE_UPPER,
+                SAFE_LOWER,
+            ])
         else:
-            print('Usage: {} [--safari]'.format(sys.argv[0]), file=sys.stderr)
+            print('Usage: {} [--safari|-x]'.format(sys.argv[0]), file=sys.stderr)
             sys.exit(1)
     else:
         result = DEFAULT_RULE.rnd()
