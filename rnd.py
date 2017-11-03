@@ -92,8 +92,8 @@ DEFAULT_RULE.addCategory(category=SAFE_LOWER)
 DEFAULT_RULE.addCategory(category=PUNCT)
 
 SAFARI_WORD_COUNT = 4
-SAFARI_WORK_LENGTH = 3
-SAFARI_RULE = CategoryBasedRule(length=SAFARI_WORK_LENGTH*SAFARI_WORD_COUNT, category_quorum=2)
+SAFARI_WORD_LENGTH = 3
+SAFARI_RULE = CategoryBasedRule(length=SAFARI_WORD_LENGTH*SAFARI_WORD_COUNT, category_quorum=2)
 SAFARI_RULE.addCategory(category=DIGITS)
 SAFARI_RULE.addCategory(category=SAFE_UPPER)
 SAFARI_RULE.addCategory(category=SAFE_LOWER)
@@ -104,7 +104,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         if sys.argv[1] == '--safari':
             result = SAFARI_RULE.rnd()
-            result = '-'.join([result[i*SAFARI_WORK_LENGTH:(i+1)*SAFARI_WORK_LENGTH] for i in range(SAFARI_WORD_COUNT)])
+            result = '-'.join([result[i*SAFARI_WORD_LENGTH:(i+1)*SAFARI_WORD_LENGTH] for i in range(SAFARI_WORD_COUNT)])
         else:
             print('Usage: {} [--safari]'.format(sys.argv[0]), file=sys.stderr)
             sys.exit(1)
