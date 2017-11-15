@@ -108,23 +108,41 @@ def legible(separator, word_count, word_length, rule_class, category_quorum, cat
     return result
 
 
+USAGE = '''
+Usage: {prog}
+       {prog} -x
+       {prog} --safari[=N]
+'''.strip()
+
+
 if __name__ == '__main__':
     import sys
     if len(sys.argv) > 1:
-        if sys.argv[1] == '--safari':
-            result = legible('-', SAFARI_WORD_COUNT, SAFARI_WORD_LENGTH, CategoryBasedRule, 2, [
+        op_word_count_str = sys.argv[1].split('=',1) + [None]
+        op = op_word_count_str.pop(0)
+        word_count_str = op_word_count_str.pop(0)
+        try:
+            word_count = int(word_count_str)
+        except:
+            word_count = None
+        if op == '--safari':
+            if word_count is None:
+                word_count = SAFARI_WORD_COUNT
+            result = legible('-', word_count, SAFARI_WORD_LENGTH, CategoryBasedRule, 2, [
                 DIGITS,
                 SAFE_UPPER,
                 SAFE_LOWER,
             ])
-        elif sys.argv[1] == '-x':
-            result = legible('_', 5, 4, CategoryBasedRule, 3, [
+        elif op == '-x':
+            if word_count is None:
+                word_count = 5
+            result = legible('_', word_count, 4, CategoryBasedRule, 3, [
                 DIGITS,
                 SAFE_UPPER,
                 SAFE_LOWER,
             ])
         else:
-            print('Usage: {} [--safari|-x]'.format(sys.argv[0]), file=sys.stderr)
+            print(USAGE.format(prog=sys.argv[0]), file=sys.stderr)
             sys.exit(1)
     else:
         result = DEFAULT_RULE.rnd()
