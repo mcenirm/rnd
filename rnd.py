@@ -29,6 +29,7 @@ unsafe_letters = {
     'L',
     'U', # cf https://en.wikipedia.org/wiki/Base32#Crockford.27s_Base32
 }
+unsafe_letters |= {_.lower() for _ in unsafe_letters}
 
 ambiguous_or_unsafe_letters = ambiguous_letters | unsafe_letters
 
