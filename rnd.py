@@ -99,6 +99,12 @@ SAFARI_RULE.addCategory(category=DIGITS)
 SAFARI_RULE.addCategory(category=SAFE_UPPER)
 SAFARI_RULE.addCategory(category=SAFE_LOWER)
 
+DNS_FIRST_RULE = CategoryBasedRule(length=1)
+DNS_FIRST_RULE.addCategory(category=SAFE_LOWER)
+DNS_REST_RULE = CategoryBasedRule()
+DNS_REST_RULE.addCategory(category=SAFE_LOWER)
+DNS_REST_RULE.addCategory(category=DIGITS)
+
 
 def legible(separator, word_count, word_length, rule_class, category_quorum, categories):
     rule = rule_class(length=word_length*word_count, category_quorum=category_quorum)
@@ -111,8 +117,9 @@ def legible(separator, word_count, word_length, rule_class, category_quorum, cat
 
 USAGE = '''
 Usage: {prog}
-       {prog} -x
+       {prog} -x[=N]
        {prog} --safari[=N]
+       {prog} --dns[=N]
 '''.strip()
 
 
@@ -141,6 +148,12 @@ if __name__ == '__main__':
                 DIGITS,
                 SAFE_UPPER,
                 SAFE_LOWER,
+            ])
+        elif op == '--dns':
+            if word_count is None:
+                word_count = 1
+            result = '.'.join([
+                DNS_FIRST_RULE.rnd() + DNS_REST_RULE.rnd() for _ in range(word_count)
             ])
         else:
             print(USAGE.format(prog=sys.argv[0]), file=sys.stderr)
